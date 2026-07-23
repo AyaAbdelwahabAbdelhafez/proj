@@ -1,0 +1,1201 @@
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقرير المبيعات اليومي - Sh7bakati Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;900&family=Cairo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f0f4f8;
+      color: #1a2530;
+      padding: 20px 20px 40px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-wrapper {
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .report-header {
+      background: linear-gradient(135deg, #0a1628, #1A5276);
+      color: #fff;
+      padding: 26px 24px 22px;
+      border-radius: 16px 16px 0 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .report-header .logo {
+      width: 140px;
+      height: 140px;
+      border-radius: 24px;
+      background: #fff;
+      padding: 10px;
+      margin: 0 auto 14px;
+      display: block;
+      object-fit: contain;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.14);
+      transition: transform 0.3s ease;
+    }
+
+    .report-header .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .report-header .logo-link {
+      display: block;
+      width: fit-content;
+      margin: 0 auto 14px;
+    }
+
+    .report-header .store-name-header {
+      color: #e9ebeb;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 2px;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .report-header .store-name-header .ltr-part {
+      letter-spacing: .5px;
+    }
+
+    .report-header .store-name-header .store-name-ar {
+      color: #7fd6d6;
+      letter-spacing: normal;
+    }
+
+    .report-header .store-name-header .ltr-part,
+    .report-header .store-name-header .store-name-ar,
+    .report-header .store-name-header .dash {
+      unicode-bidi: isolate;
+    }
+
+    .report-header .store-name-header .ltr-part {
+      direction: ltr;
+    }
+
+    .report-header .store-name-header .dash {
+      color: #cbd5e1;
+    }
+
+    .report-header h1 {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 900;
+      font-size: 30px;
+    }
+
+    .report-header p.subtitle {
+      color: #cbd5e1;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .header-meta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .clock {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #cbd5e1;
+      background: rgba(255,255,255,0.08);
+      padding: 5px 14px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      position: relative;
+    }
+
+    /* ===== SECTION LABEL ===== */
+    .section-label {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0a1628;
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #1A5276;
+      display: inline-block;
+    }
+
+    .section-label + .section-label {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* ===== FORM ELEMENTS ===== */
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #1a2530;
+    }
+
+    .req {
+      color: #e74c5e;
+      margin-right: 2px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 18px;
+    }
+
+    @media (max-width: 540px) {
+      .grid2 {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .card {
+        padding: 18px 14px;
+      }
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 15px;
+      transition: 0.3s;
+      background: #fff;
+      color: #1a2530;
+    }
+
+    input:hover,
+    select:hover,
+    textarea:hover {
+      border-color: #cbd5e1;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #1A5276;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(26, 82, 118, 0.1);
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 14px center;
+      background-size: 16px;
+      padding-left: 38px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* ===== AMOUNT INPUT ===== */
+    .amount-wrap {
+      position: relative;
+    }
+
+    .amount-wrap input {
+      padding-left: 56px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+    }
+
+    .currency-badge {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      font-weight: 700;
+      color: #0a7a7a;
+      background: #e8f4f8;
+      border-radius: 8px;
+      padding: 2px 10px;
+      pointer-events: none;
+      border: 1px solid #b8d4e0;
+    }
+
+    /* ===== TOTAL ROW ===== */
+    .total-row {
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #e8f4f8;
+      border: 1px solid #b8d4e0;
+      border-radius: 12px;
+      padding: 12px 18px;
+    }
+
+    .total-row span:first-child {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0a1628;
+    }
+
+    .total-row span:last-child {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0a7a7a;
+    }
+
+    /* ===== ERROR BANNER ===== */
+    .error-banner {
+      display: none;
+      background: #fdecee;
+      border: 1px solid #f6c8ce;
+      color: #e74c5e;
+      font-size: 13px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+    .error-banner.show {
+      display: block;
+    }
+
+    /* ===== SUBMIT BUTTON ===== */
+    button.submit {
+      width: 100%;
+      margin-top: 24px;
+      background: #1A5276;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.3s;
+    }
+
+    button.submit:hover {
+      background: #0E3A56;
+      transform: translateY(-2px);
+    }
+
+    button.submit:active {
+      transform: scale(0.98);
+    }
+
+    button.submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    button.submit.loading .spinner {
+      display: inline-block;
+    }
+    button.submit.loading .btn-label {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== HIDDEN ===== */
+    .hidden {
+      display: none !important;
+    }
+
+    /* ===== RECEIPT ===== */
+    .receipt-wrap {
+      padding: 8px 0 4px;
+    }
+
+    .receipt {
+      background: white;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 10px 40px rgba(11, 26, 46, 0.08);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      border-bottom: none;
+    }
+
+    .receipt.exporting {
+      box-shadow: none;
+      border-radius: 16px;
+    }
+
+    .receipt-head {
+      text-align: center;
+      padding: 24px 24px 18px;
+      background: linear-gradient(135deg, #0a1628, #1A5276);
+    }
+
+    .receipt-head .logo {
+      width: 100px !important;
+      height: 100px !important;
+      object-fit: contain !important;
+      border-radius: 16px;
+      background: #fff;
+      padding: 6px;
+    }
+
+    .receipt-head .brand {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      font-size:  23px;
+      color: #fff;
+    }
+    .receipt-head .store-name {
+      color: #e9ebeb;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 2px;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .receipt-head .store-name .ltr-part {
+      letter-spacing: .3px;
+    }
+
+    .receipt-head .store-name .ar-name {
+      color: #7fd6d6;
+      letter-spacing: normal;
+    }
+
+    .receipt-head .store-name .ltr-part,
+    .receipt-head .store-name .ar-name,
+    .receipt-head .store-name .dash {
+      unicode-bidi: isolate;
+    }
+
+    .receipt-head .store-name .ltr-part {
+      direction: ltr;
+    }
+
+    .receipt-head .store-name .dash {
+      color: #cbd5e1;
+    }
+
+    .receipt-head .kicker {
+      font-size: 12px;
+      color: #7fd6d6;
+      margin-top: 4px;
+      font-weight: 700;
+    }
+
+    .receipt-body {
+      padding: 22px 24px 4px;
+    }
+
+    .receipt hr {
+      border: none;
+      border-top: 1.5px dashed #dfe6f0;
+      margin: 12px 0;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+      padding: 5px 0;
+      line-height: 1.6;
+    }
+
+    .receipt-row .k {
+      color: #4a5b78;
+      font-weight: 600;
+    }
+
+    .receipt-row .v {
+      font-weight: 600;
+      text-align: left;
+      color: #0a1628;
+    }
+
+    .receipt-row .v.num {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .receipt-row.notes .v {
+      font-family: inherit;
+      font-weight: 400;
+      text-align: right;
+      max-width: 60%;
+      color: #2c3e5c;
+    }
+
+    .receipt-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 8px;
+      padding-top: 14px;
+      border-top: 2px solid #1A5276;
+    }
+
+    .receipt-total .k {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0a1628;
+    }
+
+    .receipt-total .v {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #0a7a7a;
+    }
+
+    .receipt-total .v .num {
+      unicode-bidi: isolate;
+      direction: ltr;
+    }
+
+    .receipt-total .v .currency {
+      font-family: 'Cairo', sans-serif;
+      font-size: 14px;
+      unicode-bidi: isolate;
+    }
+
+    .receipt-foot {
+      text-align: center;
+      margin: 16px 0 6px;
+      font-size: 12px;
+      color: #7a8aa0;
+      border-top: 1px solid #eef2f8;
+      padding-top: 14px;
+    }
+
+    .zigzag {
+      display: block;
+      width: 100%;
+      height: 14px;
+      background: #f0f4f8;
+      fill: #f0f4f8;
+    }
+
+    /* ===== RECEIPT ACTIONS ===== */
+    .receipt-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .receipt-actions button {
+      flex: 1;
+      min-width: 120px;
+      padding: 14px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      border: 2px solid #e2e8f0;
+      background: white;
+      color: #1a2530;
+      transition: 0.2s;
+    }
+
+    .receipt-actions button:active {
+      transform: scale(0.97);
+    }
+
+    #downloadBtn {
+      background: #1A5276;
+      color: white;
+      border: none;
+    }
+
+    #downloadBtn:hover {
+      background: #0E3A56;
+    }
+
+    #downloadBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #resetBtn:hover {
+      background: #e9edf4;
+    }
+
+    .success-note {
+      text-align: center;
+      font-size: 13px;
+      color: #5e6f8d;
+      margin: 14px 0 6px;
+    }
+
+    /* ===== AUTO-SAVE BADGE ===== */
+    .autosave-badge {
+      font-size: 11px;
+      color: #94a3b8;
+      text-align: left;
+      margin-top: 6px;
+      padding: 0 4px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .autosave-badge.saved {
+      color: #1A5276;
+      opacity: 1;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .receipt-actions button {
+        min-width: 100px;
+      }
+      .receipt-body {
+        padding: 16px 14px 4px;
+      }
+      .receipt-head {
+        padding: 18px 16px 14px;
+      }
+      .report-header {
+        padding: 20px 16px 18px;
+      }
+      .report-header .logo {
+        width: 110px;
+        height: 110px;
+        border-radius: 20px;
+      }
+      .receipt-head .logo {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+
+  <!-- HEADER -->
+    <div class="report-header" id="reportHeader">
+      <a href="https://sh7bakati-store.com" target="_blank" rel="noopener noreferrer" class="logo-link">
+        <img class="logo" src="https://i.ibb.co/0JkL9wP/logo.png" alt="شبكاتي ستور">
+      </a>
+      <p class="store-name-header">
+        <span class="ltr-part">Sh7bakati Store</span><span class="dash">—</span><span class="store-name-ar">شبكاتي ستور للإتصالات</span>
+      </p>
+      <h1>تقرير المبيعات اليومي</h1>
+      <p class="subtitle">راجع الأرقام بدقة — التقرير يُقفل بعد الإرسال ولا يمكن التعديل.</p>
+      <div class="header-meta">
+        <div class="clock" id="clock"></div>
+      </div>
+    </div>
+
+    <!-- ERROR BANNER -->
+    <div id="errorBanner" class="error-banner"></div>
+
+    <!-- ===== FORM ===== -->
+    <form id="salesForm" class="card" novalidate>
+      <div class="section-label"><span class="dot"></span> بيانات الموظف</div>
+
+      <div class="field">
+        <label for="email">البريد الإلكتروني <span class="req">*</span></label>
+        <input type="email" id="email" required placeholder="name@example.com" autocomplete="email">
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label for="employee">اسم الموظف <span class="req">*</span></label>
+          <select id="employee" required>
+            <option value="" disabled selected>اختر...</option>
+            <option>محمد عبده</option>
+            <option>رامز قصي</option>
+            <option>طاهر علي</option>
+            <option>مهند محمد</option>
+            <option value="__other__">موظف آخر...</option>
+          </select>
+          <input type="text" id="employeeOther" placeholder="اكتب اسم الموظف" style="margin-top:8px; display:none;">
+        </div>
+        <div class="field">
+          <label for="branch">الفرع <span class="req">*</span></label>
+          <select id="branch" required>
+            <option value="" disabled selected>اختر...</option>
+            <option>فرع الدمام</option>
+            <option>فرع المنيزلة</option>
+            <option>فرع النزهة</option>
+            <option value="__other__">فرع آخر...</option>
+          </select>
+          <input type="text" id="branchOther" placeholder="اكتب اسم الفرع" style="margin-top:8px; display:none;">
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label for="system">النظام</label>
+          <select id="system">
+            <option value="" selected>اختر...</option>
+            <option>الإكسسوارات</option>
+            <option>الشرائح</option>
+            <option>العقود</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="custody">العهدة <span class="req">*</span></label>
+          <div class="amount-wrap">
+            <input type="number" id="custody" required min="0" step="0.01" placeholder="0.00">
+            <span class="currency-badge">ر.س</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label"><span class="dot"></span> تفاصيل المبيعات</div>
+
+      <div class="grid2">
+        <div class="field">
+          <label for="cash">مبيعات الكاش <span class="req">*</span></label>
+          <div class="amount-wrap">
+            <input type="number" class="sales-amt" id="cash" required min="0" step="0.01" placeholder="0.00">
+            <span class="currency-badge">ر.س</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="wallet">مبيعات المحفظة <span class="req">*</span></label>
+          <div class="amount-wrap">
+            <input type="number" class="sales-amt" id="wallet" required min="0" step="0.01" placeholder="0.00">
+            <span class="currency-badge">ر.س</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="bankTransfer">مبيعات التحويلات <span class="req">*</span></label>
+          <div class="amount-wrap">
+            <input type="number" class="sales-amt" id="bankTransfer" required min="0" step="0.01" placeholder="0.00">
+            <span class="currency-badge">ر.س</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="otherMeans">مبيعات وسائل أخرى <span class="req">*</span></label>
+          <div class="amount-wrap">
+            <input type="number" class="sales-amt" id="otherMeans" required min="0" step="0.01" placeholder="0.00">
+            <span class="currency-badge">ر.س</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="total-row">
+        <span>إجمالي المبيعات</span>
+        <span id="liveTotal">0.00 ر.س</span>
+      </div>
+
+      <div class="field" style="margin-top:18px;">
+        <label for="notes">ملاحظات إضافية</label>
+        <textarea id="notes" placeholder="أي فروقات أو ملاحظات عن الوردية...">لا يوجد</textarea>
+      </div>
+
+      <div class="autosave-badge" id="autosaveBadge">💾 يتم الحفظ التلقائي...</div>
+
+      <button type="submit" class="submit" id="submitBtn">
+        <span class="spinner"></span>
+        <span class="btn-label">إقفال الوردية وإرسال التقرير</span>
+      </button>
+    </form>
+
+    <!-- ===== RECEIPT ===== -->
+    <div id="receiptSection" class="receipt-wrap hidden">
+      <div class="receipt" id="receiptNode">
+        <div class="receipt-head">
+          <img class="logo" src="https://i.ibb.co/0JkL9wP/logo.png" alt="شبكاتي ستور">
+          <p class="store-name"><span class="ltr-part">Sh7bakati Store</span><span class="dash">—</span><span class="ar-name">شبكاتي ستور للإتصالات</span></p>
+          <p class="brand">تقرير المبيعات اليومي</p>
+          <p class="kicker" id="rBranch">—</p>
+        </div>
+        <div class="receipt-body">
+          <div class="receipt-row"><span class="k">التاريخ والوقت</span><span class="v" id="rDate">—</span></div>
+          <div class="receipt-row"><span class="k">الموظف</span><span class="v" id="rEmployee">—</span></div>
+          <div class="receipt-row"><span class="k">البريد الإلكتروني</span><span class="v" id="rEmail">—</span></div>
+          <div class="receipt-row" id="rSystemRow"><span class="k">النظام</span><span class="v" id="rSystem">—</span></div>
+          <hr>
+          <div class="receipt-row"><span class="k">العهدة</span><span class="v num" id="rCustody">0.00</span></div>
+          <div class="receipt-row"><span class="k">مبيعات الكاش</span><span class="v num" id="rCash">0.00</span></div>
+          <div class="receipt-row"><span class="k">مبيعات المحفظة</span><span class="v num" id="rWallet">0.00</span></div>
+          <div class="receipt-row"><span class="k">مبيعات التحويلات</span><span class="v num" id="rBank">0.00</span></div>
+          <div class="receipt-row"><span class="k">مبيعات وسائل أخرى</span><span class="v num" id="rOther">0.00</span></div>
+          <div class="receipt-total"><span class="k">الإجمالي</span><span class="v"><span class="num" id="rTotal">0.00</span> <span class="currency">ر.س</span></span></div>
+          <div class="receipt-row notes" id="rNotesRow"><span class="k">ملاحظات</span><span class="v" id="rNotes">—</span></div>
+          <p class="receipt-foot">✅ تم إرسال التقرير بنجاح — شكراً لالتزامك</p>
+        </div>
+        <svg class="zigzag" viewBox="0 0 200 14" preserveAspectRatio="none">
+          <polygon points="0,14 10,3 20,14 30,3 40,14 50,3 60,14 70,3 80,14 90,3 100,14 110,3 120,14 130,3 140,14 150,3 160,14 170,3 180,14 190,3 200,14" fill="#1A5276" opacity="0.15" />
+        </svg>
+      </div>
+
+      <div class="receipt-actions">
+        <button id="downloadBtn" type="button">📥 تحميل الإيصال</button>
+        <button id="resetBtn" type="button">📋 تقرير جديد</button>
+      </div>
+      <p class="success-note">احتفظ بنسخة الإيصال لسجلاتك الشخصية.</p>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ============================================================
+      // CONFIG
+      // ============================================================
+      var EXEC_URL =
+        "https://script.google.com/macros/s/AKfycbwsFg1jueft5wsbtvhvtjD9kb7JxyZ-9IRInetLUOyID1m1iSrNF9oihDXK3EEPnsDBJQ/exec";
+
+      // ============================================================
+      // HELPERS
+      // ============================================================
+      function fmt(n) {
+        var v = Number(n) || 0;
+        return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function getFormData() {
+        var branchValue = branchSelect.value === '__other__' ? branchOther.value.trim() : branchSelect.value;
+        var employeeValue = employeeSelect.value === '__other__' ? employeeOther.value.trim() : employeeSelect.value;
+        return {
+          email: document.getElementById('email').value.trim(),
+          employee: employeeValue,
+          branch: branchValue,
+          system: document.getElementById('system').value.trim(),
+          custody: document.getElementById('custody').value,
+          cash: document.getElementById('cash').value,
+          wallet: document.getElementById('wallet').value,
+          bankTransfer: document.getElementById('bankTransfer').value,
+          otherMeans: document.getElementById('otherMeans').value,
+          notes: document.getElementById('notes').value.trim() || 'لا يوجد'
+        };
+      }
+
+      // ============================================================
+      // CLOCK
+      // ============================================================
+      function tickClock() {
+        var el = document.getElementById('clock');
+        var now = new Date();
+        el.textContent = now.toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'long' }) +
+          ' — ' + now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+      }
+      tickClock();
+      setInterval(tickClock, 30000);
+
+      // ============================================================
+      // DOM REFS
+      // ============================================================
+      var branchSelect = document.getElementById('branch');
+      var branchOther = document.getElementById('branchOther');
+      var employeeSelect = document.getElementById('employee');
+      var employeeOther = document.getElementById('employeeOther');
+      var amtInputs = document.querySelectorAll('.sales-amt');
+      var liveTotal = document.getElementById('liveTotal');
+      var form = document.getElementById('salesForm');
+      var submitBtn = document.getElementById('submitBtn');
+      var errorBanner = document.getElementById('errorBanner');
+      var receiptSection = document.getElementById('receiptSection');
+      var autosaveBadge = document.getElementById('autosaveBadge');
+      var reportHeader = document.getElementById('reportHeader');
+
+      // ============================================================
+      // TOGGLE "OTHER" FIELDS
+      // ============================================================
+      branchSelect.addEventListener('change', function() {
+        branchOther.style.display = branchSelect.value === '__other__' ? 'block' : 'none';
+      });
+      employeeSelect.addEventListener('change', function() {
+        employeeOther.style.display = employeeSelect.value === '__other__' ? 'block' : 'none';
+      });
+
+      // ============================================================
+      // LIVE TOTAL
+      // ============================================================
+      function recalcTotal() {
+        var total = 0;
+        amtInputs.forEach(function(i) { total += Number(i.value) || 0; });
+        liveTotal.textContent = fmt(total) + ' ر.س';
+        return total;
+      }
+      amtInputs.forEach(function(i) { i.addEventListener('input', recalcTotal); });
+
+      // ============================================================
+      // ERROR BANNER
+      // ============================================================
+      function showError(msg) {
+        errorBanner.textContent = msg;
+        errorBanner.classList.add('show');
+      }
+
+      function clearError() {
+        errorBanner.classList.remove('show');
+        errorBanner.textContent = '';
+      }
+
+      // ============================================================
+      // AUTO-SAVE (Local Storage)
+      // ============================================================
+      var autosaveTimer = null;
+
+      function saveToLocal() {
+        try {
+          var email = document.getElementById('email').value.trim();
+          if (!email) return;
+          localStorage.setItem('salesReportDraft', JSON.stringify({
+            email: email,
+            _timestamp: Date.now()
+          }));
+          autosaveBadge.textContent = '💾 تم الحفظ التلقائي ✓';
+          autosaveBadge.classList.add('saved');
+          clearTimeout(autosaveTimer);
+          autosaveTimer = setTimeout(function() {
+            autosaveBadge.textContent = '💾 يتم الحفظ التلقائي...';
+            autosaveBadge.classList.remove('saved');
+          }, 3000);
+        } catch (e) { /* ignore */ }
+      }
+
+      function loadFromLocal() {
+        try {
+          var raw = localStorage.getItem('salesReportDraft');
+          if (!raw) {
+            loadIdentity();
+            return;
+          }
+          var data = JSON.parse(raw);
+          if (Date.now() - data._timestamp > 86400000) {
+            localStorage.removeItem('salesReportDraft');
+            loadIdentity();
+            return;
+          }
+          loadIdentity();
+          if (data.email) document.getElementById('email').value = data.email;
+        } catch (e) { /* ignore */ }
+      }
+
+      // ============================================================
+      // IDENTITY (البريد/الموظف/الفرع) - بيفضلوا محفوظين حتى بعد إرسال التقرير
+      // ============================================================
+      function saveIdentity(payload) {
+        try {
+          localStorage.setItem('salesReportIdentity', JSON.stringify({
+            email: payload.email,
+            employee: payload.employee,
+            branch: payload.branch
+          }));
+        } catch (e) { /* ignore */ }
+      }
+
+      function loadIdentity() {
+        try {
+          var raw = localStorage.getItem('salesReportIdentity');
+          if (!raw) return;
+          var data = JSON.parse(raw);
+          if (data.email) document.getElementById('email').value = data.email;
+          if (data.employee) {
+            var empOpt = Array.from(employeeSelect.options).find(o => o.value === data.employee);
+            if (empOpt) {
+              employeeSelect.value = data.employee;
+            } else {
+              employeeSelect.value = '__other__';
+              employeeOther.value = data.employee;
+              employeeOther.style.display = 'block';
+            }
+          }
+          if (data.branch) {
+            var branchOpt = Array.from(branchSelect.options).find(o => o.value === data.branch);
+            if (branchOpt) {
+              branchSelect.value = data.branch;
+            } else {
+              branchSelect.value = '__other__';
+              branchOther.value = data.branch;
+              branchOther.style.display = 'block';
+            }
+          }
+        } catch (e) { /* ignore */ }
+      }
+
+      document.getElementById('email').addEventListener('change', saveToLocal);
+      document.getElementById('email').addEventListener('input', saveToLocal);
+
+      loadFromLocal();
+
+      // ============================================================
+      // FORM SUBMIT
+      // ============================================================
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        clearError();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        var payload = getFormData();
+
+        if (!payload.branch) {
+          showError('من فضلك اكتب اسم الفرع.');
+          return;
+        }
+        if (!payload.employee) {
+          showError('من فضلك اكتب اسم الموظف.');
+          return;
+        }
+
+        var total = recalcTotal();
+
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+
+        var qs = Object.keys(payload).map(function(k) {
+          return encodeURIComponent(k) + '=' + encodeURIComponent(payload[k]);
+        }).join('&');
+
+        fetch(EXEC_URL + '?' + qs, {
+          method: 'GET',
+          mode: 'no-cors'
+        })
+          .then(function() {
+            fillReceipt(payload, total);
+            form.classList.add('hidden');
+            reportHeader.classList.add('hidden');
+            receiptSection.classList.remove('hidden');
+            receiptSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            saveIdentity(payload);
+            localStorage.removeItem('salesReportDraft');
+          })
+          .catch(function(err) {
+            console.error('خطأ في الإرسال:', err);
+            fillReceipt(payload, total);
+            form.classList.add('hidden');
+            reportHeader.classList.add('hidden');
+            receiptSection.classList.remove('hidden');
+            receiptSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            saveIdentity(payload);
+            localStorage.removeItem('salesReportDraft');
+            showError('تم الإرسال ولكن قد يكون هناك مشكلة في الاتصال. تم حفظ التقرير محلياً.');
+          })
+          .finally(function() {
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+          });
+      });
+
+      // ============================================================
+      // FILL RECEIPT
+      // ============================================================
+      function fillReceipt(payload, total) {
+        var now = new Date();
+        document.getElementById('rBranch').textContent = payload.branch;
+        document.getElementById('rDate').textContent = now.toLocaleDateString('ar-EG') + ' — ' + now.toLocaleTimeString(
+          'ar-EG', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('rEmployee').textContent = payload.employee;
+        document.getElementById('rEmail').textContent = payload.email;
+
+        var systemRow = document.getElementById('rSystemRow');
+        if (payload.system) {
+          document.getElementById('rSystem').textContent = payload.system;
+          systemRow.style.display = '';
+        } else {
+          systemRow.style.display = 'none';
+        }
+
+        document.getElementById('rCustody').textContent = fmt(payload.custody);
+        document.getElementById('rCash').textContent = fmt(payload.cash);
+        document.getElementById('rWallet').textContent = fmt(payload.wallet);
+        document.getElementById('rBank').textContent = fmt(payload.bankTransfer);
+        document.getElementById('rOther').textContent = fmt(payload.otherMeans);
+        document.getElementById('rTotal').textContent = fmt(total);
+
+        var notesRow = document.getElementById('rNotesRow');
+        if (payload.notes) {
+          document.getElementById('rNotes').textContent = payload.notes;
+          notesRow.style.display = '';
+        } else {
+          notesRow.style.display = 'none';
+        }
+      }
+
+      // ============================================================
+      // 📥 DOWNLOAD RECEIPT AS IMAGE
+      // ============================================================
+      function triggerDownload(blob, fileName) {
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.download = fileName;
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+      }
+
+      document.getElementById('downloadBtn').addEventListener('click', function() {
+        var btn = this;
+        var originalLabel = btn.textContent;
+        btn.textContent = '⏳ جاري التحضير...';
+        btn.disabled = true;
+
+        var node = document.getElementById('receiptNode');
+
+        node.classList.add('exporting');
+
+        var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+
+        ready.then(function() {
+          return new Promise(function(resolve) { setTimeout(resolve, 60); });
+        }).then(function() {
+          return html2canvas(node, {
+            scale: Math.max(3, window.devicePixelRatio || 1),
+            backgroundColor: '#ffffff',
+            useCORS: true,
+            imageTimeout: 15000,
+            logging: false
+          });
+        }).then(function(canvas) {
+          var employee = (document.getElementById('rEmployee').textContent || 'تقرير').trim();
+          // تنظيف الاسم من رموز ممكن تكسر اسم الملف، مع الحفاظ على العربي (مدعوم في كل المتصفحات الحديثة)
+          var safeEmployee = employee.replace(/[\\\/:*?"<>|]/g, '').replace(/\s+/g, '-');
+          var stamp = new Date().toISOString().slice(0, 10);
+          var fileName = 'تقرير-مبيعات-' + (safeEmployee || 'تقرير') + '-' + stamp + '.png';
+
+          canvas.toBlob(function(blob) {
+            if (!blob) {
+              showError('حدث خطأ أثناء إنشاء الصورة، حاول مرة أخرى.');
+              return;
+            }
+            triggerDownload(blob, fileName);
+          }, 'image/png', 1.0);
+        }).catch(function(error) {
+          console.error('خطأ في تحميل الصورة:', error);
+          showError('حدث خطأ أثناء تحميل الصورة: ' + error.message);
+        }).finally(function() {
+          node.classList.remove('exporting');
+          btn.textContent = originalLabel;
+          btn.disabled = false;
+        });
+      });
+
+      // ============================================================
+      // RESET - يحتفظ بالبريد الإلكتروني والموظف والفرع
+      // ============================================================
+      document.getElementById('resetBtn').addEventListener('click', function() {
+        var emailValue = document.getElementById('email').value;
+        var employeeValue = employeeSelect.value;
+        var employeeOtherValue = employeeOther.value;
+        var branchValue = branchSelect.value;
+        var branchOtherValue = branchOther.value;
+
+        form.reset();
+
+        // إعادة تعيين الإيميل والموظف والفرع
+        document.getElementById('email').value = emailValue;
+        employeeSelect.value = employeeValue;
+        branchSelect.value = branchValue;
+
+        if (employeeValue === '__other__') {
+          employeeOther.value = employeeOtherValue;
+          employeeOther.style.display = 'block';
+        } else {
+          employeeOther.style.display = 'none';
+        }
+
+        if (branchValue === '__other__') {
+          branchOther.value = branchOtherValue;
+          branchOther.style.display = 'block';
+        } else {
+          branchOther.style.display = 'none';
+        }
+
+        // إعادة تعيين الملاحظات إلى "لا يوجد"
+        document.getElementById('notes').value = 'لا يوجد';
+
+        recalcTotal();
+        clearError();
+        receiptSection.classList.add('hidden');
+        form.classList.remove('hidden');
+        reportHeader.classList.remove('hidden');
+        localStorage.removeItem('salesReportDraft');
+        autosaveBadge.textContent = '💾 تم مسح البيانات';
+        autosaveBadge.classList.add('saved');
+        setTimeout(function() {
+          autosaveBadge.textContent = '💾 يتم الحفظ التلقائي...';
+          autosaveBadge.classList.remove('saved');
+        }, 2000);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById('custody').focus();
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
